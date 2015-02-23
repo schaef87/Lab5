@@ -7,20 +7,21 @@
 //
 //*************************************
 
-
 #include "ListLinked.h"
 
 //Constructor. Creates an emtpy list.
 template <typename DataType>
-List<DataType>::List(int ignored = 0){
-	List<DataType>::ListNode::ListNode(const DataType& nodeData, ListNode* nextPtr){
-		DataType dataItem = nodeData;
-		ListNode* next = nextPtr;
-	}
-
-	ListNode* head = *ListNode;
-	ListNode* cursor = 0;
+List<DataType>::List(int ignored){
+	head = 0;
+	cursor = 0;
 }
+
+template <typename DataType>
+List<DataType>::ListNode::ListNode(const DataType& nodeData, ListNode* nextPtr){
+	dataItem = nodeData;
+	next = nextPtr;
+}
+
 // Copy constructor. Creates a list which is equivalent in content
 // to the "other" list.
 template <typename DataType>
@@ -53,12 +54,74 @@ List<DataType>& List<DataType>::operator=(const List& other){
 	return *this;
 }
 
-
 // Destructor. Frees the memory used by a list.
 template <typename DataType>
 List<DataType>::~List() {
 	clear();
 }
+
+template <typename DataType>
+void List<DataType>::insert(const DataType& newDataItem) throw (logic_error){
+
+}
+
+template <typename DataType>
+void List<DataType>::remove() throw (logic_error){
+
+}
+
+template <typename DataType>
+void List<DataType>::replace(const DataType& newDataItem) throw (logic_error){
+
+}
+
+template <typename DataType>
+void List<DataType>::clear(){
+
+}
+
+template <typename DataType>
+bool List<DataType>::isEmpty() const{
+	return true;
+}
+template <typename DataType>
+bool List<DataType>::isFull() const{
+	return true;
+}
+
+template <typename DataType>
+void List<DataType>::gotoBeginning() throw (logic_error){
+
+}
+
+template <typename DataType>
+void List<DataType>::gotoEnd() throw (logic_error){
+
+}
+
+template <typename DataType>
+bool List<DataType>::gotoNext() throw (logic_error){
+	return true;
+}
+
+template <typename DataType>
+bool List<DataType>::gotoPrior() throw (logic_error){
+	return true;
+}
+
+template <typename DataType>
+DataType List<DataType>::getCursor() const throw (logic_error){
+	return true;
+}
+
+template <typename DataType>
+void List<DataType>::insertBefore(const DataType& newDataItem) throw (logic_error){
+
+}
+
+//void insert(const DataType& newDataItem){
+//
+//}
 
 //**********************************
 //
