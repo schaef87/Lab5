@@ -56,6 +56,7 @@ class List {
 
     ListNode* head;
     ListNode* cursor;
+    int size;
 
 };
 

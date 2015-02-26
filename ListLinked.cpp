@@ -14,6 +14,7 @@ template <typename DataType>
 List<DataType>::List(int ignored){
 	head = 0;
 	cursor = 0;
+	size = 0;
 }
 
 template <typename DataType>
@@ -62,60 +63,150 @@ List<DataType>::~List() {
 
 template <typename DataType>
 void List<DataType>::insert(const DataType& newDataItem) throw (logic_error){
+	if(isFull()){
+		throw logic_error("The list is full");
+	} else {
+		ListNode* nPtr;
+		nPtr = cursor->next;   //IT BREAKS HERE*************************************
 
+		ListNode* newNode = new ListNode(newDataItem, nPtr);
+		nPtr = newNode;
+		cursor = newNode;
+		size++;
+	}
 }
 
 template <typename DataType>
 void List<DataType>::remove() throw (logic_error){
+	if(this->isEmpty()){
+		throw logic_error("The list is empty");
+	} else {
+		ListNode* toDelete = this->cursor;
+		ListNode* cPos = cursor->next;
 
+		gotoPrior();
+		cursor = cPos;
+
+		delete toDelete;
+		size--;
+	}
 }
 
 template <typename DataType>
 void List<DataType>::replace(const DataType& newDataItem) throw (logic_error){
-
+	if(this->isEmpty()){
+		throw logic_error("The list is empty");
+	} else {
+		cursor->dataItem = newDataItem;
+	}
 }
 
 template <typename DataType>
 void List<DataType>::clear(){
-
+	if(this->isEmpty()){
+		throw logic_error("The list is empty");
+	} else {
+		do{
+			gotoEnd();
+			remove();
+			size--;
+		}while(size > 0);
+	}
 }
+
 
 template <typename DataType>
 bool List<DataType>::isEmpty() const{
-	return true;
+	if(size == 0){
+		return true;
+	} else {
+		return false;
+	}
 }
+
 template <typename DataType>
 bool List<DataType>::isFull() const{
-	return true;
+	return false;
 }
 
 template <typename DataType>
 void List<DataType>::gotoBeginning() throw (logic_error){
-
+	if(this->isEmpty()){
+		throw logic_error("The list is empty");
+	} else {
+		cursor = head;
+	}
 }
 
 template <typename DataType>
 void List<DataType>::gotoEnd() throw (logic_error){
+	if(this->isEmpty()){
+		throw logic_error("The list is empty");
+	} else {
+		gotoBeginning();
 
+		for(int x = 0; x < size; x++){
+			gotoNext();
+		}
+	}
 }
 
 template <typename DataType>
 bool List<DataType>::gotoNext() throw (logic_error){
-	return true;
+	if(this->isEmpty()){
+		throw logic_error("The list is empty");
+		return false;
+	} else if(cursor->next == NULL){
+		return false;
+	} else {
+		cursor = cursor->next;
+		return true;
+	}
+
 }
+
 
 template <typename DataType>
 bool List<DataType>::gotoPrior() throw (logic_error){
-	return true;
+	if(this->isEmpty()){
+		throw logic_error("The list is empty");
+		return false;
+	} else {
+		int count;   //Counts how many elements to the end.
+		int retrieve;   //Calculated value.
+
+		while(gotoNext()){
+			count++;
+		}
+
+		retrieve = size - count;  //What element will be selected after operation.
+		gotoBeginning();
+
+		for(int x = 1; x < retrieve;x++){  //Work back to the previous element of the
+			gotoNext();                    //original.
+		}
+		return true;
+	}
+
 }
 
 template <typename DataType>
 DataType List<DataType>::getCursor() const throw (logic_error){
-	return true;
+	if(this->isEmpty()){
+		throw logic_error("The list is empty.");
+	} else {
+		return cursor->dataItem;
+	}
 }
 
 template <typename DataType>
 void List<DataType>::insertBefore(const DataType& newDataItem) throw (logic_error){
+	if(this->isEmpty()){
+		throw logic_error("The list is empty.");
+	} else {
+		gotoPrior();
+		insert(newDataItem);
+	}
 
 }
 
