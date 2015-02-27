@@ -65,12 +65,14 @@ template <typename DataType>
 void List<DataType>::insert(const DataType& newDataItem) throw (logic_error){
 	if(isFull()){
 		throw logic_error("The list is full");
+	} else if(size == 0){
+		ListNode* newNode = new ListNode(newDataItem, 0);
+		cursor = newNode;
+		head = newNode;
+		size++;
 	} else {
-		ListNode* nPtr;
-		nPtr = cursor->next;   //IT BREAKS HERE*************************************
-
-		ListNode* newNode = new ListNode(newDataItem, nPtr);
-		nPtr = newNode;
+		ListNode* newNode = new ListNode(newDataItem, cursor->next);
+		cursor->next = newNode;
 		cursor = newNode;
 		size++;
 	}
@@ -81,14 +83,25 @@ void List<DataType>::remove() throw (logic_error){
 	if(this->isEmpty()){
 		throw logic_error("The list is empty");
 	} else {
-		ListNode* toDelete = this->cursor;
-		ListNode* cPos = cursor->next;
+		if(cursor != head){
+			ListNode* cursorPos = cursor->next;
+			ListNode* toDelete = cursor;
 
-		gotoPrior();
-		cursor = cPos;
+			gotoPrior();
+			cursor->next = cursorPos;
 
-		delete toDelete;
-		size--;
+			delete toDelete;
+			size--;
+		} else {
+			ListNode* transHead = cursor->next;
+			ListNode* toDelete = cursor;
+
+			gotoNext();
+			head = transHead;
+
+			delete toDelete;
+			size--;
+		}
 	}
 }
 
@@ -109,7 +122,8 @@ void List<DataType>::clear(){
 		do{
 			gotoEnd();
 			remove();
-			size--;
+			if(size > 0){
+			size--;}
 		}while(size > 0);
 	}
 }
@@ -172,8 +186,8 @@ bool List<DataType>::gotoPrior() throw (logic_error){
 		throw logic_error("The list is empty");
 		return false;
 	} else {
-		int count;   //Counts how many elements to the end.
-		int retrieve;   //Calculated value.
+		int count = 1;      //Counts how many elements to the end.
+		int retrieve = 0;   //Calculated value(SEE BELOW).
 
 		while(gotoNext()){
 			count++;
@@ -182,12 +196,12 @@ bool List<DataType>::gotoPrior() throw (logic_error){
 		retrieve = size - count;  //What element will be selected after operation.
 		gotoBeginning();
 
-		for(int x = 1; x < retrieve;x++){  //Work back to the previous element of the
-			gotoNext();                    //original.
+		while(retrieve > 1){              //Work from the previous element of the
+			gotoNext();                   //original.
+			retrieve--;
 		}
 		return true;
 	}
-
 }
 
 template <typename DataType>
@@ -247,6 +261,6 @@ void List<DataType>::showStructure() const
 			}
 			cout << " ";
 		}
-		cout << endl;
+		cout <<  endl;
 	}
 }
