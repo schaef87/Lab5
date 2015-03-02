@@ -10,11 +10,12 @@
 // Displays a slide show.
 
 // Uncomment the following line if running in windows
-//#define WIN32
+#define WIN32
 
 #include <iostream>
 #include <fstream>
 #include <ctime>
+#include <cstdlib>
 
 using namespace std;
 
@@ -31,29 +32,29 @@ using namespace std;
 // with something nicer (such as sleep or usleep) if you so choose.
 void wait(int secs) 
 {
-    int start=clock();
+	int start=clock();
 
-    while (clock() < start + secs * CLOCKS_PER_SEC);
+	while (clock() < start + secs * CLOCKS_PER_SEC);
 }
 
 //--------------------------------------------------------------------
 
 class Slide
 {
-  public:
-    static const int HEIGHT = 10,		// Slide dimensions
-                     WIDTH  = 36;
+public:
+	static const int HEIGHT = 10,		// Slide dimensions
+	WIDTH  = 36;
 
-    void display () const;			// Display slide and pause
+	void display () const;			// Display slide and pause
 
-  private:
+private:
 
-    char image [HEIGHT][WIDTH];  	   // Slide image
-    int pause;				   // Seconds to pause after
-   					   //  displaying slide
+	char image [HEIGHT][WIDTH];  	   // Slide image
+	int pause;				   // Seconds to pause after
+	//  displaying slide
 
-    friend istream& operator>> (istream& in, Slide& slide);
-    friend ostream& operator<< (ostream& out, const Slide& slide);
+	friend istream& operator>> (istream& in, Slide& slide);
+	friend ostream& operator<< (ostream& out, const Slide& slide);
 };
 
 //--------------------------------------------------------------------
@@ -71,12 +72,9 @@ int main ()
 
 	ifstream slideFile ( filename );
 
-	if ( !slideFile )
-	{
+	if ( !slideFile ){
 		cout << "Error opening file " << filename << endl;
-	}
-	else
-	{
+	} else {
 		// Read in the slides one-by-one. (Your code below)
 
 		while(slideFile >> currSlide){
@@ -97,14 +95,11 @@ int main ()
 		}while(slideShow.gotoNext());
 	}
 
-
-
-
+	return 0;
 
 }
 
-return 0;
-}
+
 
 //--------------------------------------------------------------------
 
@@ -113,11 +108,21 @@ istream& operator>> (istream& inFile, Slide& slide)
 // Read a slide from inFile.
 
 {
-    // Read a slide from inFile. (Your code below)
+	// Read a slide from inFile. (Your code below)
+	List<Slide> slideShow;    	    // Slide show
+	Slide currSlide;
+	string line;
+	int lCount = 0;
 
+	slideShow.gotoBeginning();                   //BROKEN BROKEN BROKEN BROKEN!!!!!
 
+	do{
+		getline(inFile, slide);
+		lCount++;
+	}while(lCount < 10);
 
-
+	lCount = 0;
+	return slide;
 }
 
 //--------------------------------------------------------------------
@@ -125,7 +130,7 @@ istream& operator>> (istream& inFile, Slide& slide)
 ostream& operator<< (ostream& out, const Slide& slide)
 
 {
-    // Display a slide. (Your code below)
+	// Display a slide. (Your code below)
 	slide.display();
 	wait(slide.pause);
 	return out;
@@ -136,16 +141,15 @@ ostream& operator<< (ostream& out, const Slide& slide)
 void Slide:: display () const
 
 {
-    //This should compile and run on both Windows and Unix
-    //Feel free to change this if you want to do something nicer.
-    #ifdef WIN32
-        system("cls");
-    #else
-        system("clear");
-    #endif
+	//This should compile and run on both Windows and Unix
+	//Feel free to change this if you want to do something nicer.
+#ifdef WIN32
+	system("cls");
+#else
+	system("clear");
+#endif
 
-    // Display a slide and pause. (Your code below)
-
+	// Display a slide and pause. (Your code below)
 
 
 }
